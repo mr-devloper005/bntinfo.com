@@ -12,7 +12,7 @@
   Do not add data fetching, scripts, or route logic here.
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap');
 
 /* Per-task display + body typefaces (consumed via task-themes.ts). */
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&family=Syne:wght@500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap');
@@ -26,8 +26,8 @@ body {
 
 .editable-site-root {
   /* Yelp-style clean sans, used for both display and body. */
-  --editable-font-display: 'Inter', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
-  --editable-font-body: 'Inter', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --editable-font-display: 'Cormorant Garamond', Georgia, serif;
+  --editable-font-body: 'Manrope', system-ui, sans-serif;
   /* Premium easing curve used across every hover + transition. */
   --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
   font-family: var(--editable-font-body);
@@ -97,8 +97,103 @@ body {
 }
 
 ::selection {
-  background: color-mix(in oklab, var(--slot4-accent-fill) 28%, transparent);
-  color: var(--slot4-page-text);
+  background: #2F6B3F;
+  color: #ffffff;
+}
+
+.nav-icon { display:inline-flex; height:2.5rem; width:2.5rem; align-items:center; justify-content:center; border:1px solid var(--editable-border); transition:.25s; }
+.nav-icon svg { height:1.1rem; width:1.1rem; }
+.nav-icon:hover { color:var(--slot4-accent-fill); border-color:var(--slot4-accent); }
+.nav-action { display:inline-flex; align-items:center; justify-content:center; gap:.4rem; min-height:2.5rem; border:1px solid var(--slot4-dark-bg); background:var(--slot4-dark-bg); padding:.55rem 1rem; color:#fff; font-size:.7rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+.nav-link { position:relative; font-size:.7rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--slot4-muted-text); }
+.nav-link::after { content:''; position:absolute; left:50%; right:50%; bottom:-1rem; height:2px; background:var(--slot4-accent-fill); transition:.25s; }
+.nav-link:hover,.nav-link.is-active { color:var(--slot4-page-text); }
+.nav-link:hover::after,.nav-link.is-active::after { left:0; right:0; }
+.footer-label { font-size:.65rem; font-weight:700; letter-spacing:.24em; text-transform:uppercase; color:var(--slot4-accent-soft); }
+.footer-link { width:max-content; font-size:.875rem; color:rgba(255,255,255,.65); transition:.2s; }
+.footer-link:hover { color:#fff; transform:translateX(3px); }
+
+@keyframes editorial-marquee { to { transform:translateX(-50%); } }
+@keyframes hero-reveal { from { opacity:0; transform:scale(1.03); } to { opacity:1; transform:scale(1); } }
+.editorial-marquee-track { display:flex; width:max-content; animation:editorial-marquee 38s linear infinite; }
+.editorial-marquee:hover .editorial-marquee-track { animation-play-state:paused; }
+.hero-reveal { animation:hero-reveal 1.1s var(--ease-premium) both; }
+
+/* Task archives use an editorial catalogue rhythm across every post type. */
+.task-archive-hero::after { content:''; position:absolute; right:clamp(1rem,5vw,6rem); top:2rem; width:clamp(5rem,12vw,11rem); aspect-ratio:1; border:1px solid color-mix(in srgb,var(--tk-accent) 35%,transparent); border-radius:50%; pointer-events:none; }
+.task-filter-panel { position:relative; z-index:1; }
+.task-card-grid > a:nth-child(3n+2) { margin-top:clamp(0rem,3vw,2.25rem); }
+.task-card-grid img { filter:saturate(.88); }
+.task-card-grid a:hover img { filter:saturate(1.05); }
+.task-archive-article .task-card-grid > a:first-child { grid-column:span 2; }
+.task-archive-article .task-card-grid > a:first-child > div:first-child { aspect-ratio:16/7; }
+
+/* Detail pages retain task-specific content while sharing one framed canvas. */
+.task-detail > section:not(:last-child), .task-detail > article { position:relative; }
+.task-detail > section:not(:last-child)::before, .task-detail > article::before { content:''; position:absolute; inset:0 auto auto 0; width:5rem; height:5rem; border-left:1px solid var(--tk-accent); border-top:1px solid var(--tk-accent); opacity:.35; pointer-events:none; }
+.task-detail .article-content { max-width:48rem; }
+.task-detail-article .article-content { margin-left:auto; margin-right:auto; }
+.task-detail .article-content > p:first-child::first-letter { float:left; margin:.08em .12em 0 0; color:var(--tk-accent); font-family:var(--editable-font-display); font-size:4.6em; line-height:.72; }
+.task-detail aside > div, .task-detail iframe { border-radius:0 !important; }
+
+@media (max-width: 767px) {
+  .task-archive-hero::after { display:none; }
+  .task-card-grid > a:nth-child(3n+2) { margin-top:0; }
+  .task-archive-article .task-card-grid > a:first-child { grid-column:auto; }
+}
+
+/* Strong task-page compositions: the archive intro is now a compact branded
+   destination, not an oversized white placeholder. */
+.task-archive-hero { background:linear-gradient(120deg,#2F6B3F 0%,#285d37 58%,#7FB77E 160%); color:#fff; }
+.task-archive-hero > div:first-child { opacity:.28; }
+.task-archive-hero > .relative { padding-top:clamp(3.5rem,7vw,6.5rem); padding-bottom:clamp(3.5rem,7vw,6.5rem); }
+.task-archive-hero h1 { max-width:900px; color:#fff; }
+.task-archive-hero h1 + p { max-width:700px; color:rgba(255,255,255,.72); }
+.task-archive-hero h1 + p + div span { border-color:rgba(255,255,255,.25); background:rgba(255,255,255,.08); color:#fff; }
+.task-archive-hero > .relative > div:first-of-type > div:first-child { color:#cce5cc; }
+.task-archive-hero::after { border-color:rgba(255,255,255,.22); width:clamp(8rem,15vw,14rem); }
+.task-filter-panel { max-width:1120px; margin-top:2.5rem; color:var(--tk-text); border:0; box-shadow:0 28px 70px rgba(18,53,29,.24); }
+.task-archive-results { background:var(--tk-bg); }
+
+/* Business archives behave like a directory; article archives behave like a magazine. */
+.task-archive-listing .task-card-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.task-archive-listing .task-card-grid > a { margin-top:0; }
+.task-archive-listing .task-card-grid > a:nth-child(4n+1) { grid-column:span 2; }
+.task-archive-article .task-card-grid { grid-template-columns:repeat(12,minmax(0,1fr)); }
+.task-archive-article .task-card-grid > a { grid-column:span 4; margin-top:0; }
+.task-archive-article .task-card-grid > a:first-child { grid-column:span 8; grid-row:span 2; }
+.task-archive-article .task-card-grid > a:nth-child(2), .task-archive-article .task-card-grid > a:nth-child(3) { grid-column:span 4; }
+
+/* Article detail opens with a full-width green title stage and overlapping cover. */
+.task-detail-article { max-width:none; padding-left:0; padding-right:0; padding-top:0; }
+.task-detail-article > a { display:flex; width:min(100% - 3rem, 1180px); margin:2rem auto; }
+.task-detail-article > div:nth-of-type(1) { margin-top:0; padding:clamp(3rem,7vw,7rem) max(1.5rem,calc((100vw - 1180px)/2)); border:0; background:#2F6B3F; color:#fff; }
+.task-detail-article > div:nth-of-type(1) p { color:#cce5cc; }
+.task-detail-article > div:nth-of-type(1) div { color:rgba(255,255,255,.65); }
+.task-detail-article > img { display:block; width:min(100% - 3rem,1180px); max-height:650px; margin:-2.5rem auto 0; box-shadow:0 28px 70px rgba(18,53,29,.18); }
+.task-detail-article > .article-content, .task-detail-article > section { width:min(100% - 3rem,780px); margin-left:auto; margin-right:auto; }
+
+/* Business detail uses a branded identity panel and a broader information canvas. */
+.listing-detail-layout { max-width:none; padding-left:max(1.5rem,calc((100vw - 1380px)/2)); padding-right:max(1.5rem,calc((100vw - 1380px)/2)); background:linear-gradient(#eef6ec 0 330px,#fff 330px); }
+.listing-detail-layout > a { color:#2F6B3F; }
+.listing-detail-layout > div { grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr); }
+.listing-identity { min-height:190px; padding:2rem; background:#2F6B3F; color:#fff; box-shadow:0 25px 60px rgba(47,107,63,.16); }
+.listing-identity > div:first-child { width:9rem; height:9rem; border:6px solid rgba(255,255,255,.2); background:#fff; }
+.listing-identity h1 { color:#fff; font-size:clamp(2.75rem,5vw,5.5rem); }
+.listing-identity [class*="--tk-muted"] { color:rgba(255,255,255,.7); }
+.listing-identity svg { color:#7FB77E; }
+.listing-detail-layout aside { top:12rem; }
+
+@media (max-width:1023px) {
+  .task-archive-listing .task-card-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .task-archive-article .task-card-grid > a, .task-archive-article .task-card-grid > a:first-child, .task-archive-article .task-card-grid > a:nth-child(2), .task-archive-article .task-card-grid > a:nth-child(3) { grid-column:span 6; grid-row:auto; }
+  .listing-detail-layout > div { grid-template-columns:1fr; }
+}
+
+@media (max-width:639px) {
+  .task-archive-listing .task-card-grid, .task-archive-article .task-card-grid { grid-template-columns:1fr; }
+  .task-archive-listing .task-card-grid > a, .task-archive-listing .task-card-grid > a:nth-child(4n+1), .task-archive-article .task-card-grid > a, .task-archive-article .task-card-grid > a:first-child, .task-archive-article .task-card-grid > a:nth-child(2), .task-archive-article .task-card-grid > a:nth-child(3) { grid-column:auto; }
+  .listing-identity { padding:1.5rem; }
 }
 
 ::-webkit-scrollbar-track {
